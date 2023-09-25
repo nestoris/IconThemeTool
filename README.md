@@ -1,6 +1,8 @@
 # Icon Theme Tool
 Tool for viewing and editing icon themes
 
+Uses [GAWK](https://www.gnu.org/software/gawk/) as back-end and [GTKDIALOG](code.google.com/p/gtkdialog) (the fresh forks are [here](https://github.com/bm16ton/gtkdialog) and [here](https://github.com/puppylinux-woof-CE/gtkdialog)) as a front-end.
+
 Under development...
 
 *Screenshoots:*
