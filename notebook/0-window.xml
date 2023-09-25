@@ -1,0 +1,20 @@
+<window image-name="" space-fill="true" space-expand="true" width-default="800" window_position="1" title="Тема значков: %themename%" resizable="true">
+	<vbox space-fill="true" space-expand="true">
+		<hbox space-fill="true" space-expand="true" homogeneous="true" border-width="0">
+			<frame Тема %themename%>
+				<hbox space-fill="true" space-expand="true">
+					<vbox space-expand="true" space-fill="true">
+						<notebook space-fill="true" space-expand="true" show-border="true" homogeneous="false" tab-vborder="0" tab-pos="2" labels="Общее|Дубликаты|Контексты|Значки|Поимённо">
+						</notebook>
+					</vbox>
+				</hbox>
+			</frame>
+		</hbox>
+		<hbox space-expand="false">
+			<button ok></button>
+			<button cancel></button>
+		</hbox>
+	</vbox>
+	<!--action signal="show">"gawk -f get_files_data.awk"</action-->
+</window>
+

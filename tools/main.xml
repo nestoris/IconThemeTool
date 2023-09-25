@@ -1,0 +1,12 @@
+<window title="Icon info" resizable="true">
+	<vbox border-width="0">
+		<hbox>
+			<notebook>
+			</notebook>
+		</hbox>
+		<hbox>
+			<button ok></button>
+			<button cancel></button>
+		</hbox>
+	</vbox>
+</window>

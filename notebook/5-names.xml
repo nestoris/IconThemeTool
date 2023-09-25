@@ -1,0 +1,54 @@
+<window title="Поимённо">
+	<vbox space-fill="true" space-expand="true" visible="true">
+		<hbox space-fill="true" space-expand="true">
+			<vbox space-fill="true" space-expand="true" visible="true">
+				<tree auto-refresh="true" exported-column="0" rules-hint="true">
+					<label>"Имя|Контекст|Размеры|Оригиналы/Симлинки"</label>
+					<variable>ICONAME</variable>
+					<input file>data/icons_by_name.txt</input>
+					<action signal="button-release-event">echo INAME $ICONAME</action>
+					<action signal="key-release-event">echo INAME $ICONAME</action>
+
+<!--NAME_HIDE_SHOW_BEGIN-- >
+					<action signal="changed" condition="command_is_true(gawk -v s=_%NAME_S%_ -v var=$ICONAME -F\"|\" '$1==var{gsub(/(^|, |$)/,\"_\",$3);print ($3~s?\"true\":\"false\")}' data/icons_by_name.txt)">show:NAME_%NAME_S%</action>
+					<action signal="changed" condition="command_is_false(gawk -v s=_%NAME_S%_ -v var=$ICONAME -F\"|\" '$1==var{gsub(/(^|, |$)/,\"_\",$3);print ($3~s?\"true\":\"false\")}' data/icons_by_name.txt)">hide:NAME_%NAME_S%</action>
+<!--NAME_HIDE_SHOW_END-->
+
+<!--PIX_NAME_HIDE_SHOW_BEGIN-- >
+					<action signal="changed" condition="command_is_true(gawk -v num=%NAME_N% -v s=%NAME_S% -v var=$ICONAME -F\"|\" '$1==var{split($4,a);for(i in a){split(a[i],b,/:/);c[b[1]]=b[2];if(s in c){count=c[s]}};print (count>=num?\"true\":\"false\")}' data/icons_by_name.txt)">show:PIXVIEW_%NAME_S%_%NAME_N%</action>
+					<action signal="changed" condition="command_is_false(gawk -v num=%NAME_N% -v s=%NAME_S% -v var=$ICONAME -F\"|\" '$1==var{split($4,a);for(i in a){split(a[i],b,/:/);c[b[1]]=b[2];if(s in c){count=c[s]}};print (count>=num?\"true\":\"false\")}' data/icons_by_name.txt)">hide:PIXVIEW_%NAME_S%_%NAME_N%</action>
+<!--PIX_NAME_HIDE_SHOW_END-->
+
+				</tree>
+				<variable>"TAB_5"</variable>
+			</vbox>
+			<vbox space-fill="false" space-expand="false" visible="true">
+				<hbox space-fill="true" space-expand="true">
+					<frame Список>
+						<tree auto-refresh="true" visible="true" column-visible="0">
+							<width>300</width>
+							<label>"Путь|Папка|Тип|Контекст|Размер"</label>
+							<action signal="button-release-event">ln -sf "%themedir%/$PIXVIEW_NAMES_LIST" "data/preview_icon_names"</action>
+							<action signal="key-release-event">ln -sf "%themedir%/$PIXVIEW_NAMES_LIST" "data/preview_icon_names"</action>
+							<action signal="button-release-event" function="refresh">PIXVIEW_NAMES</action>
+							<action signal="key-release-event" function="refresh">PIXVIEW_NAMES</action>
+							<action>echo XDG-SELECT "$PIXVIEW_NAMES_LIST"</action>
+							<input file>data/icon_of_name_list.txt</input>
+							<variable>PIXVIEW_NAMES_LIST</variable>
+						</tree>
+					</frame>
+				</hbox>
+				<hbox space-fill="true" space-expand="true" homogenious="false">
+					<!--IBN_BEGIN-->
+					<frame Preview>
+						<pixmap auto-refresh="true" visible="true" space-expand="true">
+							<variable>PIXVIEW_NAMES</variable>
+							<input file>data/preview_icon_names</input>
+						</pixmap>
+					</frame>
+					<!--IBN_END-->
+				</hbox>
+			</vbox>
+		</hbox>
+	</vbox>
+</window>

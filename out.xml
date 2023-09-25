@@ -1,0 +1,419 @@
+<window image-name="" space-fill="true" space-expand="true" width-default="800" window_position="1" title="Тема значков: SE98" resizable="true">
+	<vbox space-fill="true" space-expand="true">
+		<hbox space-fill="true" space-expand="true" homogeneous="true" border-width="0">
+			<frame Тема SE98>
+				<hbox space-fill="true" space-expand="true">
+					<vbox space-expand="true" space-fill="true">
+						
+<notebook space-fill="true" space-expand="true" show-border="true" homogeneous="false" tab-vborder="0" tab-pos="2" labels="Общее|Дубликаты|Контексты|Значки|Поимённо">
+
+						
+	<vbox space-fill="true" space-expand="true">
+		<hbox homogeneous="false">
+			<vbox space-expand="false" space-fill="true">
+				<frame Образец>
+					<pixmap xalign="0" auto-refresh="true">
+						<input file>"data/example_icon"</input>
+					</pixmap>
+				</frame>
+			</vbox>
+			<vbox space-expand="false" space-fill="true">
+				<frame Описание>
+					<text space-expand="true" space-fill="true" xalign="0" yalign="0" use-markup="true" auto-refresh="true">
+						<input file>"data/descr.html"</input>
+					</text>
+				</frame>
+			</vbox>
+			<vbox space-expand="true" space-fill="true">
+			<frame Директории>
+				<tree space-expand="true" space-fill="true" auto-sort="false" visible="true" rules-hint="true" auto-refresh="true">
+					<label>Имя|Размер|Мин|Макс|Тип|Масштаб|Порог|Ошибки|Оригиналы|Симлинки|Битые|Не в размер</label>
+					<variable>"DIRECTORIES"</variable>
+					<input file>"data/dirs_descs.csv"</input>
+					<action signal="changed">"echo DIRINFO $DIRECTORIES"</action>
+					<action>"xdg-open /home/joker/Документы/GitHub/Win98SE/SE98/$DIRECTORIES"</action>
+				</tree>
+			</frame>
+			</vbox>
+		</hbox>
+		<hbox homogeneous="false">
+			<frame Описание директории>
+				<edit space-expand="true" space-fill="true" auto-refresh="true">
+					<input file>"data/dir_desc.txt"</input>
+					<height>200</height>
+				</edit>
+			</frame>
+		</hbox>
+		<variable>"TAB_1"</variable>
+	</vbox>
+
+
+	<vbox space-fill="true" space-expand="true">
+		<hbox space-fill="true" space-expand="true" homogeneous="true">
+			<frame Список дубликатов>
+				<vbox space-fill="true" space-expand="true">
+					<tree auto-refresh="true" exported-column="0" headers-clickable="false" search-column="1" enable-search="true">
+						<variable>DUPLIST</variable>
+						<label>файл|md5sum</label>
+						<!--item>data</item-->
+						<input file>data/duplist.txt</input>
+						<action signal="changed" condition="command_is_false([ -z $DUPLIST ] && echo true || echo false)">[ -f "/home/joker/Документы/GitHub/Win98SE/SE98/$DUPLIST" ] && cp "/home/joker/Документы/GitHub/Win98SE/SE98/$DUPLIST" data/preview_dup</action>
+						<action condition="command_is_false([ -z $DUPLIST ] && echo true || echo false)">[ -f "/home/joker/Документы/GitHub/Win98SE/SE98/$DUPLIST" ] && dbus-send --session --print-reply --dest=org.freedesktop.FileManager1 --type=method_call /org/freedesktop/FileManager1 org.freedesktop.FileManager1.ShowItems array:string:"/home/joker/Документы/GitHub/Win98SE/SE98/$DUPLIST" string:""</action>
+					</tree>
+				</vbox>
+			</frame>
+			<frame Значок>
+				<vbox>
+				<hbox space-fill="true" space-expand="true" spacing="0" homogeneous="false">
+					<vbox>
+						<menubar>
+							<menu use-underline="true">
+								<menuitem stock-id="gtk-open" accel-key="0x51" accel-mods="4">
+									<action>[ -f "/home/joker/Документы/GitHub/Win98SE/SE98/$DUPLIST" ] && dbus-send --session --print-reply --dest=org.freedesktop.FileManager1 --type=method_call /org/freedesktop/FileManager1 org.freedesktop.FileManager1.ShowItems array:string:"/home/joker/Документы/GitHub/Win98SE/SE98/$DUPLIST" string:""</action>
+								</menuitem>
+								<menuitem icon-name="emblem-symbolic-link" label="Link files with same md5sum.">
+									<action>[ -f "/home/joker/Документы/GitHub/Win98SE/SE98/$DUPLIST" ] && echo LINKDUPES $DUPLIST</action>
+								</menuitem>
+								<menuitem icon-name="emblem-symbolic-link" label="Link it's' dupes everywhere.">
+									<action>[ -f "/home/joker/Документы/GitHub/Win98SE/SE98/$DUPLIST" ] && echo LINKALLDUPES $DUPLIST</action>
+								</menuitem>
+								<menuitem icon-name="folder" label="Link it's' dupes in same directory.">
+									<action>[ -f "/home/joker/Документы/GitHub/Win98SE/SE98/$DUPLIST" ] && echo LINKSAMEDIRDUPES $DUPLIST</action>
+								</menuitem>
+							<menuitemseparator></menuitemseparator>
+								<menuitem stock-id="gtk-quit" accel-key="0x51" accel-mods="4">
+									<action>exit:Quit</action>
+								</menuitem>
+								<label>"_File"</label>
+							</menu>
+							<menu label="_Other" use-underline="true">
+								<menuitem stock-id="gtk-home" label="Stock Icon"></menuitem>
+								<menuitemseparator></menuitemseparator>
+							</menu>
+						</menubar>
+					</vbox>
+				</hbox>
+				</vbox>
+				<hbox space-fill="true" space-expand="true" homogeneous="false">
+			<frame Preview>
+					<pixmap auto-refresh="true">
+						<input file>data/preview_dup</input>
+					</pixmap>
+			</frame>
+				</hbox>
+			</frame>
+		</hbox>
+		<variable>"TAB_2"</variable>
+	</vbox>
+
+
+	<vbox space-fill="true" space-expand="true">
+		<hbox>
+			<vbox space-fill="true" space-expand="true">
+				<notebook space-fill="true" space-expand="true" show-border="true" homogeneous="false" tab-vborder="0" tab-pos="0" labels="Actions|Animations|Applications|Categories|Devices|Emblems|Emotes|MimeTypes|Places|Status|Stock|Tools">
+					<vbox>
+						<tree auto-refresh="true">
+							<label>Папка|Размер|Масштаб|Контекст|Тип|Наибольший|Наименьший</label>
+							<input>gawk -F"|" '$4~/Actions/' data/dirinfo.csv</input>
+							<!--action signal="cursor-changed">[ -d "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Actions" ] && find "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Actions" -maxdepth 1 -mindepth 1 -printf "$tree_Actions!%f|%f\n" > data/iconsindir.txt</action-->
+							<action signal="cursor-changed">echo LIST $tree_Actions</action>
+							<action signal="button-release-event" function="refresh">icon_selected</action>
+							<action signal="key-release-event" function="refresh">icon_selected</action>
+							<action signal="cursor-changed" function="clear">iconfilefilter</action>
+							<variable>tree_Actions</variable>
+						</tree>
+						<variable>tab_Actions</variable>
+					</vbox>
+					<vbox>
+						<tree auto-refresh="true">
+							<label>Папка|Размер|Масштаб|Контекст|Тип|Наибольший|Наименьший</label>
+							<input>gawk -F"|" '$4~/Animations/' data/dirinfo.csv</input>
+							<!--action signal="cursor-changed">[ -d "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Animations" ] && find "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Animations" -maxdepth 1 -mindepth 1 -printf "$tree_Animations!%f|%f\n" > data/iconsindir.txt</action-->
+							<action signal="cursor-changed">echo LIST $tree_Animations</action>
+							<action signal="button-release-event" function="refresh">icon_selected</action>
+							<action signal="key-release-event" function="refresh">icon_selected</action>
+							<action signal="cursor-changed" function="clear">iconfilefilter</action>
+							<variable>tree_Animations</variable>
+						</tree>
+						<variable>tab_Animations</variable>
+					</vbox>
+					<vbox>
+						<tree auto-refresh="true">
+							<label>Папка|Размер|Масштаб|Контекст|Тип|Наибольший|Наименьший</label>
+							<input>gawk -F"|" '$4~/Applications/' data/dirinfo.csv</input>
+							<!--action signal="cursor-changed">[ -d "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Applications" ] && find "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Applications" -maxdepth 1 -mindepth 1 -printf "$tree_Applications!%f|%f\n" > data/iconsindir.txt</action-->
+							<action signal="cursor-changed">echo LIST $tree_Applications</action>
+							<action signal="button-release-event" function="refresh">icon_selected</action>
+							<action signal="key-release-event" function="refresh">icon_selected</action>
+							<action signal="cursor-changed" function="clear">iconfilefilter</action>
+							<variable>tree_Applications</variable>
+						</tree>
+						<variable>tab_Applications</variable>
+					</vbox>
+					<vbox>
+						<tree auto-refresh="true">
+							<label>Папка|Размер|Масштаб|Контекст|Тип|Наибольший|Наименьший</label>
+							<input>gawk -F"|" '$4~/Categories/' data/dirinfo.csv</input>
+							<!--action signal="cursor-changed">[ -d "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Categories" ] && find "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Categories" -maxdepth 1 -mindepth 1 -printf "$tree_Categories!%f|%f\n" > data/iconsindir.txt</action-->
+							<action signal="cursor-changed">echo LIST $tree_Categories</action>
+							<action signal="button-release-event" function="refresh">icon_selected</action>
+							<action signal="key-release-event" function="refresh">icon_selected</action>
+							<action signal="cursor-changed" function="clear">iconfilefilter</action>
+							<variable>tree_Categories</variable>
+						</tree>
+						<variable>tab_Categories</variable>
+					</vbox>
+					<vbox>
+						<tree auto-refresh="true">
+							<label>Папка|Размер|Масштаб|Контекст|Тип|Наибольший|Наименьший</label>
+							<input>gawk -F"|" '$4~/Devices/' data/dirinfo.csv</input>
+							<!--action signal="cursor-changed">[ -d "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Devices" ] && find "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Devices" -maxdepth 1 -mindepth 1 -printf "$tree_Devices!%f|%f\n" > data/iconsindir.txt</action-->
+							<action signal="cursor-changed">echo LIST $tree_Devices</action>
+							<action signal="button-release-event" function="refresh">icon_selected</action>
+							<action signal="key-release-event" function="refresh">icon_selected</action>
+							<action signal="cursor-changed" function="clear">iconfilefilter</action>
+							<variable>tree_Devices</variable>
+						</tree>
+						<variable>tab_Devices</variable>
+					</vbox>
+					<vbox>
+						<tree auto-refresh="true">
+							<label>Папка|Размер|Масштаб|Контекст|Тип|Наибольший|Наименьший</label>
+							<input>gawk -F"|" '$4~/Emblems/' data/dirinfo.csv</input>
+							<!--action signal="cursor-changed">[ -d "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Emblems" ] && find "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Emblems" -maxdepth 1 -mindepth 1 -printf "$tree_Emblems!%f|%f\n" > data/iconsindir.txt</action-->
+							<action signal="cursor-changed">echo LIST $tree_Emblems</action>
+							<action signal="button-release-event" function="refresh">icon_selected</action>
+							<action signal="key-release-event" function="refresh">icon_selected</action>
+							<action signal="cursor-changed" function="clear">iconfilefilter</action>
+							<variable>tree_Emblems</variable>
+						</tree>
+						<variable>tab_Emblems</variable>
+					</vbox>
+					<vbox>
+						<tree auto-refresh="true">
+							<label>Папка|Размер|Масштаб|Контекст|Тип|Наибольший|Наименьший</label>
+							<input>gawk -F"|" '$4~/Emotes/' data/dirinfo.csv</input>
+							<!--action signal="cursor-changed">[ -d "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Emotes" ] && find "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Emotes" -maxdepth 1 -mindepth 1 -printf "$tree_Emotes!%f|%f\n" > data/iconsindir.txt</action-->
+							<action signal="cursor-changed">echo LIST $tree_Emotes</action>
+							<action signal="button-release-event" function="refresh">icon_selected</action>
+							<action signal="key-release-event" function="refresh">icon_selected</action>
+							<action signal="cursor-changed" function="clear">iconfilefilter</action>
+							<variable>tree_Emotes</variable>
+						</tree>
+						<variable>tab_Emotes</variable>
+					</vbox>
+					<vbox>
+						<tree auto-refresh="true">
+							<label>Папка|Размер|Масштаб|Контекст|Тип|Наибольший|Наименьший</label>
+							<input>gawk -F"|" '$4~/MimeTypes/' data/dirinfo.csv</input>
+							<!--action signal="cursor-changed">[ -d "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_MimeTypes" ] && find "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_MimeTypes" -maxdepth 1 -mindepth 1 -printf "$tree_MimeTypes!%f|%f\n" > data/iconsindir.txt</action-->
+							<action signal="cursor-changed">echo LIST $tree_MimeTypes</action>
+							<action signal="button-release-event" function="refresh">icon_selected</action>
+							<action signal="key-release-event" function="refresh">icon_selected</action>
+							<action signal="cursor-changed" function="clear">iconfilefilter</action>
+							<variable>tree_MimeTypes</variable>
+						</tree>
+						<variable>tab_MimeTypes</variable>
+					</vbox>
+					<vbox>
+						<tree auto-refresh="true">
+							<label>Папка|Размер|Масштаб|Контекст|Тип|Наибольший|Наименьший</label>
+							<input>gawk -F"|" '$4~/Places/' data/dirinfo.csv</input>
+							<!--action signal="cursor-changed">[ -d "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Places" ] && find "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Places" -maxdepth 1 -mindepth 1 -printf "$tree_Places!%f|%f\n" > data/iconsindir.txt</action-->
+							<action signal="cursor-changed">echo LIST $tree_Places</action>
+							<action signal="button-release-event" function="refresh">icon_selected</action>
+							<action signal="key-release-event" function="refresh">icon_selected</action>
+							<action signal="cursor-changed" function="clear">iconfilefilter</action>
+							<variable>tree_Places</variable>
+						</tree>
+						<variable>tab_Places</variable>
+					</vbox>
+					<vbox>
+						<tree auto-refresh="true">
+							<label>Папка|Размер|Масштаб|Контекст|Тип|Наибольший|Наименьший</label>
+							<input>gawk -F"|" '$4~/Status/' data/dirinfo.csv</input>
+							<!--action signal="cursor-changed">[ -d "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Status" ] && find "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Status" -maxdepth 1 -mindepth 1 -printf "$tree_Status!%f|%f\n" > data/iconsindir.txt</action-->
+							<action signal="cursor-changed">echo LIST $tree_Status</action>
+							<action signal="button-release-event" function="refresh">icon_selected</action>
+							<action signal="key-release-event" function="refresh">icon_selected</action>
+							<action signal="cursor-changed" function="clear">iconfilefilter</action>
+							<variable>tree_Status</variable>
+						</tree>
+						<variable>tab_Status</variable>
+					</vbox>
+					<vbox>
+						<tree auto-refresh="true">
+							<label>Папка|Размер|Масштаб|Контекст|Тип|Наибольший|Наименьший</label>
+							<input>gawk -F"|" '$4~/Stock/' data/dirinfo.csv</input>
+							<!--action signal="cursor-changed">[ -d "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Stock" ] && find "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Stock" -maxdepth 1 -mindepth 1 -printf "$tree_Stock!%f|%f\n" > data/iconsindir.txt</action-->
+							<action signal="cursor-changed">echo LIST $tree_Stock</action>
+							<action signal="button-release-event" function="refresh">icon_selected</action>
+							<action signal="key-release-event" function="refresh">icon_selected</action>
+							<action signal="cursor-changed" function="clear">iconfilefilter</action>
+							<variable>tree_Stock</variable>
+						</tree>
+						<variable>tab_Stock</variable>
+					</vbox>
+					<vbox>
+						<tree auto-refresh="true">
+							<label>Папка|Размер|Масштаб|Контекст|Тип|Наибольший|Наименьший</label>
+							<input>gawk -F"|" '$4~/Tools/' data/dirinfo.csv</input>
+							<!--action signal="cursor-changed">[ -d "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Tools" ] && find "/home/joker/Документы/GitHub/Win98SE/SE98/$tree_Tools" -maxdepth 1 -mindepth 1 -printf "$tree_Tools!%f|%f\n" > data/iconsindir.txt</action-->
+							<action signal="cursor-changed">echo LIST $tree_Tools</action>
+							<action signal="button-release-event" function="refresh">icon_selected</action>
+							<action signal="key-release-event" function="refresh">icon_selected</action>
+							<action signal="cursor-changed" function="clear">iconfilefilter</action>
+							<variable>tree_Tools</variable>
+						</tree>
+						<variable>tab_Tools</variable>
+					</vbox>
+
+				</notebook>
+				<variable>"TAB_3"</variable>
+			</vbox>
+			<vbox space-fill="true" space-expand="true">
+				<hbox space-fill="true" space-expand="false">
+					<entry secondary-icon-stock="gtk-clear" space-expand="true">
+						<default>""</default>
+						<variable>iconfilefilter</variable>
+						<action function="refresh">icon_selected</action>
+						<action signal="secondary-icon-press" function="clear">iconfilefilter</action>
+					</entry>
+				</hbox>
+				<hbox space-fill="true" space-expand="true">
+					<tree auto-refresh="true" column-visible="0|1|0|1">
+						<label>Путь|Имя файла|Имя|Расширение|Тип|Ширина|Высота|Размер|Тип объекта</label>
+						<input>if [ -z "$iconfilefilter" ]; then cat data/iconsindir.txt; else gawk -v f="$iconfilefilter" -F"|" '$3~f' data/iconsindir.txt; fi</input>
+						<!--action signal="button-press-event">echo INFO $icon_selected</action-->
+						<!--action signal="button-release-event">./info.awk $icon_selected</action-->
+						<action signal="button-release-event">echo INFO $icon_selected</action>
+						<action signal="key-release-event">echo INFO $icon_selected</action>
+						<action>echo XDG-SELECT $icon_selected</action>
+						<!--action signal="changed">echo INFO $icon_selected</action-->
+						<variable>icon_selected</variable>
+					</tree>
+				</hbox>
+			</vbox>
+			<vbox space-fill="true" space-expand="false">
+				<hbox space-fill="true" space-expand="false">
+					<pixmap auto-refresh="true">
+						<input file>data/view_icon</input>
+						<variable>view_icon</variable>
+					</pixmap>
+				</hbox>
+				<hbox space-fill="true" space-expand="true">
+					<vbox space-fill="true" space-expand="true">
+						<edit auto-refresh="true">
+							<input file>data/iconinfo.txt</input>
+						</edit>
+					</vbox>
+				</hbox>
+			</vbox>
+		</hbox>
+	</vbox>
+
+
+	<vbox space-fill="true" space-expand="true" visible="true">
+		<hbox space-fill="true" space-expand="true">
+			<vbox space-fill="true" space-expand="true" visible="true">
+				<tree auto-refresh="true" exported-column="0" rules-hint="true">
+					<label>"Имя|Ширина|Высота|Тип|Оригинальный|Ошибки"</label>
+					<variable>ICON</variable>
+					<item>apps/32/gnome-panel-window-list.png|16|16|png|файл|rectangle</item>
+					<item>apps/16/mate-panel-window-menu.png|16|16|png|симлинк|rectangle</item>
+					<item>apps/22/xchat.xpm|22|22|xpm|файл|rectangle</item>
+					<item>places/scalable/folder-remote-afp.icon|16|16|icon|файл|</item>
+					<item>devices/scalable/modem.svg|48|48|svg|файл|</item>
+					<action signal="changed" condition="command_is_false([ -z $ICON ] && echo true || echo false)">[ -f "/home/joker/Документы/GitHub/Win98SE/SE98/$ICON" ] && cp "/home/joker/Документы/GitHub/Win98SE/SE98/$ICON" data/preview_icon</action>
+					<action signal="changed" condition="command_is_true(gawk -f itt.awk --image \"/home/joker/Документы/GitHub/Win98SE/SE98/$ICON\")">show:PIXVIEW</action>
+					<action signal="changed" condition="command_is_true(gawk -f itt.awk --image \"/home/joker/Документы/GitHub/Win98SE/SE98/$ICON\")">hide:TEXTINFO</action>
+					<action signal="changed" condition="command_is_false(gawk -f itt.awk --image \"/home/joker/Документы/GitHub/Win98SE/SE98/$ICON\")">hide:PIXVIEW</action>
+					<action signal="changed" condition="command_is_false(gawk -f itt.awk --image \"/home/joker/Документы/GitHub/Win98SE/SE98/$ICON\")">show:TEXTINFO</action>
+					<!--action signal="changed">gawk -f itt.awk --image "/home/joker/Документы/GitHub/Win98SE/SE98/$ICON"</action-->
+				</tree>
+				<variable>"TAB_4"</variable>
+			</vbox>
+			<vbox space-fill="false" space-expand="false" visible="true">
+				<frame Preview>
+					<pixmap auto-refresh="true" visible="false">
+						<variable>PIXVIEW</variable>
+						<input file>data/preview_icon</input>
+					</pixmap>
+					<text auto-refresh="true" visible="false">
+						<variable>TEXTINFO</variable>
+						<input file>data/preview_icon</input>
+					</text>
+				</frame>
+			</vbox>
+		</hbox>
+	</vbox>
+
+
+	<vbox space-fill="true" space-expand="true" visible="true">
+		<hbox space-fill="true" space-expand="true">
+			<vbox space-fill="true" space-expand="true" visible="true">
+				<tree auto-refresh="true" exported-column="0" rules-hint="true">
+					<label>"Имя|Контекст|Размеры|Оригиналы/Симлинки"</label>
+					<variable>ICONAME</variable>
+					<input file>data/icons_by_name.txt</input>
+					<action signal="button-release-event">echo INAME $ICONAME</action>
+					<action signal="key-release-event">echo INAME $ICONAME</action>
+
+<!--NAME_HIDE_SHOW_BEGIN-- >
+					<action signal="changed" condition="command_is_true(gawk -v s=_%NAME_S%_ -v var=$ICONAME -F\"|\" '$1==var{gsub(/(^|, |$)/,\"_\",$3);print ($3~s?\"true\":\"false\")}' data/icons_by_name.txt)">show:NAME_%NAME_S%</action>
+					<action signal="changed" condition="command_is_false(gawk -v s=_%NAME_S%_ -v var=$ICONAME -F\"|\" '$1==var{gsub(/(^|, |$)/,\"_\",$3);print ($3~s?\"true\":\"false\")}' data/icons_by_name.txt)">hide:NAME_%NAME_S%</action>
+<!--NAME_HIDE_SHOW_END-->
+
+<!--PIX_NAME_HIDE_SHOW_BEGIN-- >
+					<action signal="changed" condition="command_is_true(gawk -v num=%NAME_N% -v s=%NAME_S% -v var=$ICONAME -F\"|\" '$1==var{split($4,a);for(i in a){split(a[i],b,/:/);c[b[1]]=b[2];if(s in c){count=c[s]}};print (count>=num?\"true\":\"false\")}' data/icons_by_name.txt)">show:PIXVIEW_%NAME_S%_%NAME_N%</action>
+					<action signal="changed" condition="command_is_false(gawk -v num=%NAME_N% -v s=%NAME_S% -v var=$ICONAME -F\"|\" '$1==var{split($4,a);for(i in a){split(a[i],b,/:/);c[b[1]]=b[2];if(s in c){count=c[s]}};print (count>=num?\"true\":\"false\")}' data/icons_by_name.txt)">hide:PIXVIEW_%NAME_S%_%NAME_N%</action>
+<!--PIX_NAME_HIDE_SHOW_END-->
+
+				</tree>
+				<variable>"TAB_5"</variable>
+			</vbox>
+			<vbox space-fill="false" space-expand="false" visible="true">
+				<hbox space-fill="true" space-expand="true">
+					<frame Список>
+						<tree auto-refresh="true" visible="true" column-visible="0">
+							<width>300</width>
+							<label>"Путь|Папка|Тип|Контекст|Размер"</label>
+							<action signal="button-release-event">ln -sf "/home/joker/Документы/GitHub/Win98SE/SE98/$PIXVIEW_NAMES_LIST" "data/preview_icon_names"</action>
+							<action signal="key-release-event">ln -sf "/home/joker/Документы/GitHub/Win98SE/SE98/$PIXVIEW_NAMES_LIST" "data/preview_icon_names"</action>
+							<action signal="button-release-event" function="refresh">PIXVIEW_NAMES</action>
+							<action signal="key-release-event" function="refresh">PIXVIEW_NAMES</action>
+							<action>echo XDG-SELECT "$PIXVIEW_NAMES_LIST"</action>
+							<input file>data/icon_of_name_list.txt</input>
+							<variable>PIXVIEW_NAMES_LIST</variable>
+						</tree>
+					</frame>
+				</hbox>
+				<hbox space-fill="true" space-expand="true" homogenious="false">
+					<!--IBN_BEGIN-->
+					<frame Preview>
+						<pixmap auto-refresh="true" visible="true" space-expand="true">
+							<variable>PIXVIEW_NAMES</variable>
+							<input file>data/preview_icon_names</input>
+						</pixmap>
+					</frame>
+					<!--IBN_END-->
+				</hbox>
+			</vbox>
+		</hbox>
+	</vbox>
+
+</notebook>
+
+					</vbox>
+				</hbox>
+			</frame>
+		</hbox>
+		<hbox space-expand="false">
+			<button ok></button>
+			<button cancel></button>
+		</hbox>
+	</vbox>
+	<!--action signal="show">"gawk -f get_files_data.awk"</action-->
+</window>
+
+

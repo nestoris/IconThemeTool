@@ -1,0 +1,244 @@
+<window image-name="" space-fill="true" space-expand="true" width-default="800" window_position="1" title="Тема значков: %themename%" resizable="true">
+	<vbox space-fill="true" space-expand="true">
+		<hbox space-fill="true" space-expand="true" homogeneous="true" border-width="0">
+			<frame Тема %themename%>
+				<hbox space-fill="true" space-expand="true">
+					<vbox space-expand="true" space-fill="true">
+						<notebook space-fill="true" space-expand="true" show-border="true" homogeneous="false" tab-vborder="0" tab-pos="2" labels="Общее|Дубликаты|Контексты|Значки|Поимённо">
+							<vbox space-fill="true" space-expand="true">
+								<hbox homogeneous="false">
+									<vbox space-expand="false" space-fill="true">
+										<frame Образец>
+											<pixmap xalign="0" auto-refresh="true">
+												<input file>"data/example_icon"</input>
+											</pixmap>
+										</frame>
+									</vbox>
+									<vbox space-expand="false" space-fill="true">
+										<frame Описание>
+											<text space-expand="true" space-fill="true" xalign="0" yalign="0" use-markup="true" auto-refresh="true">
+												<input file>"data/descr.html"</input>
+											</text>
+										</frame>
+									</vbox>
+									<vbox space-expand="true" space-fill="true">
+									<frame Директории>
+										<tree space-expand="true" space-fill="true" auto-sort="false" visible="true" rules-hint="true" auto-refresh="true">
+											<label>Имя|Size|Scale|Context|Type|MaxSize|MinSize|Threshold|Ошибки</label>
+											<variable>"DIRECTORIES"</variable>
+											<input file>"data/dirs_descs.csv"</input>
+											<action signal="changed">"echo DIRINFO $DIRECTORIES"</action>
+										</tree>
+									</frame>
+									</vbox>
+								</hbox>
+								<hbox homogeneous="false">
+									<frame Описание директории>
+										<edit space-expand="true" space-fill="true" auto-refresh="true">
+											<input file>"data/dir_desc.txt"</input>
+											<height>200</height>
+										</edit>
+									</frame>
+								</hbox>
+								<variable>"TAB_1"</variable>
+							</vbox>
+							<vbox space-fill="true" space-expand="true">
+								<hbox space-fill="true" space-expand="true" homogeneous="true">
+									<frame Список дубликатов>
+										<vbox space-fill="true" space-expand="true">
+											<tree auto-refresh="true" exported-column="0" headers-clickable="false" search-column="1" enable-search="true">
+												<variable>DUPLIST</variable>
+												<label>файл|md5sum</label>
+												<!--item>data</item-->
+												<input file>data/duplist.txt</input>
+												<action signal="changed" condition="command_is_false([ -z $DUPLIST ] && echo true || echo false)">[ -f "%themedir%/$DUPLIST" ] && cp "%themedir%/$DUPLIST" data/preview_dup</action>
+												<action condition="command_is_false([ -z $DUPLIST ] && echo true || echo false)">[ -f "%themedir%/$DUPLIST" ] && dbus-send --session --print-reply --dest=org.freedesktop.FileManager1 --type=method_call /org/freedesktop/FileManager1 org.freedesktop.FileManager1.ShowItems array:string:"%themedir%/$DUPLIST" string:""</action>
+											</tree>
+										</vbox>
+									</frame>
+									<frame Значок>
+										<vbox>
+										<hbox space-fill="true" space-expand="true" spacing="0" homogeneous="false">
+											<vbox>
+												<menubar>
+													<menu use-underline="true">
+														<menuitem stock-id="gtk-open" accel-key="0x51" accel-mods="4">
+															<action>[ -f "%themedir%/$DUPLIST" ] && dbus-send --session --print-reply --dest=org.freedesktop.FileManager1 --type=method_call /org/freedesktop/FileManager1 org.freedesktop.FileManager1.ShowItems array:string:"%themedir%/$DUPLIST" string:""</action>
+														</menuitem>
+														<menuitem icon-name="emblem-symbolic-link" label="Link files with same md5sum.">
+															<action>[ -f "%themedir%/$DUPLIST" ] && echo LINKDUPES $DUPLIST</action>
+														</menuitem>
+														<menuitem icon-name="emblem-symbolic-link" label="Link it's' dupes everywhere.">
+															<action>[ -f "%themedir%/$DUPLIST" ] && echo LINKALLDUPES $DUPLIST</action>
+														</menuitem>
+														<menuitem icon-name="folder" label="Link it's' dupes in same directory.">
+															<action>[ -f "%themedir%/$DUPLIST" ] && echo LINKSAMEDIRDUPES $DUPLIST</action>
+														</menuitem>
+													<menuitemseparator></menuitemseparator>
+														<menuitem stock-id="gtk-quit" accel-key="0x51" accel-mods="4">
+															<action>exit:Quit</action>
+														</menuitem>
+														<label>"_File"</label>
+													</menu>
+													<menu label="_Other" use-underline="true">
+														<menuitem stock-id="gtk-home" label="Stock Icon"></menuitem>
+														<menuitemseparator></menuitemseparator>
+													</menu>
+												</menubar>
+											</vbox>
+										</hbox>
+										</vbox>
+										<hbox space-fill="true" space-expand="true" homogeneous="false">
+									<frame Preview>
+											<pixmap auto-refresh="true">
+												<input file>data/preview_dup</input>
+											</pixmap>
+									</frame>
+										</hbox>
+									</frame>
+								</hbox>
+								<variable>"TAB_2"</variable>
+							</vbox>
+							<vbox space-fill="true" space-expand="true">
+								<hbox>
+								<vbox space-fill="true" space-expand="true">
+									<notebook space-fill="true" space-expand="true" show-border="true" homogeneous="false" tab-vborder="0" tab-pos="0" labels="%contexts%">
+										<vbox>
+											<tree auto-refresh="true">
+												<label>Папка|Размер|Масштаб|Контекст|Тип|Наибольший|Наименьший</label>
+												<input>gawk -F"|" '$4~/%context%/' data/dirinfo.csv</input>
+												<!--action signal="cursor-changed">[ -d "%themedir%/$tree_%context%" ] && find "%themedir%/$tree_%context%" -maxdepth 1 -mindepth 1 -printf "$tree_%context%!%f|%f\n" > data/iconsindir.txt</action-->
+												<action signal="cursor-changed">echo LIST $tree_%context%</action>
+												<action signal="button-release-event" function="refresh">icon_selected</action>
+												<action signal="key-release-event" function="refresh">icon_selected</action>
+												<action signal="cursor-changed" function="clear">iconfilefilter</action>
+												<variable>tree_%context%</variable>
+											</tree>
+											<variable>tab_%context%</variable>
+										</vbox>
+									</notebook>
+									<variable>"TAB_3"</variable>
+								</vbox>
+								<vbox space-fill="true" space-expand="true">
+									<hbox space-fill="true" space-expand="false">
+										<entry secondary-icon-stock="gtk-clear" space-expand="true">
+											<default>""</default>
+											<variable>iconfilefilter</variable>
+											<action function="refresh">icon_selected</action>
+											<action signal="secondary-icon-press" function="clear">iconfilefilter</action>
+										</entry>
+									</hbox>
+									<hbox space-fill="true" space-expand="true">
+										<tree auto-refresh="true" column-visible="0|1|0|1">
+											<label>Путь|Имя файла|Имя|Расширение|Тип|Ширина|Высота|Размер|Тип объекта</label>
+											<input>if [ -z "$iconfilefilter" ]; then cat data/iconsindir.txt; else gawk -v f="$iconfilefilter" -F"|" '$3~f' data/iconsindir.txt; fi</input>
+											<!--action signal="button-press-event">echo INFO $icon_selected</action-->
+											<!--action signal="button-release-event">./info.awk $icon_selected</action-->
+											<action signal="button-release-event">echo INFO $icon_selected</action>
+											<action signal="key-release-event">echo INFO $icon_selected</action>
+											<action>echo XDG-SELECT $icon_selected</action>
+											<!--action signal="changed">echo INFO $icon_selected</action-->
+											<variable>icon_selected</variable>
+										</tree>
+									</hbox>
+								</vbox>
+								<vbox space-fill="true" space-expand="false">
+									<hbox space-fill="true" space-expand="false">
+										<pixmap auto-refresh="true">
+											<input file>data/view_icon</input>
+											<variable>view_icon</variable>
+										</pixmap>
+									</hbox>
+									<hbox space-fill="true" space-expand="true">
+										<vbox space-fill="true" space-expand="true">
+											<edit auto-refresh="true">
+												<input file>data/iconinfo.txt</input>
+											</edit>
+										</vbox>
+									</hbox>
+								</vbox>
+							</hbox>
+							</vbox>
+							<vbox space-fill="true" space-expand="true" visible="true">
+								<hbox space-fill="true" space-expand="true">
+									<vbox space-fill="true" space-expand="true" visible="true">
+										<tree auto-refresh="true" exported-column="0" rules-hint="true">
+											<label>"Имя|Ширина|Высота|Тип|Оригинальный|Ошибки"</label>
+											<variable>ICON</variable>
+											<item>apps/32/gnome-panel-window-list.png|16|16|png|файл|rectangle</item>
+											<item>apps/16/mate-panel-window-menu.png|16|16|png|симлинк|rectangle</item>
+											<item>apps/22/xchat.xpm|22|22|xpm|файл|rectangle</item>
+											<item>places/scalable/folder-remote-afp.icon|16|16|icon|файл|</item>
+											<item>devices/scalable/modem.svg|48|48|svg|файл|</item>
+											<action signal="changed" condition="command_is_false([ -z $ICON ] && echo true || echo false)">[ -f "%themedir%/$ICON" ] && cp "%themedir%/$ICON" data/preview_icon</action>
+											<action signal="changed" condition="command_is_true(gawk -f itt.awk --image \"%themedir%/$ICON\")">show:PIXVIEW</action>
+											<action signal="changed" condition="command_is_true(gawk -f itt.awk --image \"%themedir%/$ICON\")">hide:TEXTINFO</action>
+											<action signal="changed" condition="command_is_false(gawk -f itt.awk --image \"%themedir%/$ICON\")">hide:PIXVIEW</action>
+											<action signal="changed" condition="command_is_false(gawk -f itt.awk --image \"%themedir%/$ICON\")">show:TEXTINFO</action>
+											<!--action signal="changed">gawk -f itt.awk --image "%themedir%/$ICON"</action-->
+										</tree>
+										<variable>"TAB_4"</variable>
+									</vbox>
+									<vbox space-fill="false" space-expand="false" visible="true">
+										<frame Preview>
+											<pixmap auto-refresh="true" visible="false">
+												<variable>PIXVIEW</variable>
+												<input file>data/preview_icon</input>
+											</pixmap>
+											<text auto-refresh="true" visible="false">
+												<variable>TEXTINFO</variable>
+												<input file>data/preview_icon</input>
+											</text>
+										</frame>
+									</vbox>
+								</hbox>
+							</vbox>
+							<vbox space-fill="true" space-expand="true" visible="true">
+								<hbox space-fill="true" space-expand="true">
+									<vbox space-fill="true" space-expand="true" visible="true">
+										<tree auto-refresh="true" exported-column="0" rules-hint="true">
+											<label>"Имя|Контекст|Размеры|Ошибки"</label>
+											<variable>ICONAME</variable>
+											<input file>data/icons_by_name.txt</input>
+											<action signal="changed">echo INAME $ICONAME</action>
+
+<!--NAME_HIDE_SHOW_BEGIN-- >
+											<action signal="changed" condition="command_is_true(gawk -v s=_%NAME_S%_ -v var=$ICONAME -F\"|\" '$1==var{gsub(/(^|, |$)/,\"_\",$3);print ($3~s?\"true\":\"false\")}' data/icons_by_name.txt)">show:NAME_%NAME_S%</action>
+											<action signal="changed" condition="command_is_false(gawk -v s=_%NAME_S%_ -v var=$ICONAME -F\"|\" '$1==var{gsub(/(^|, |$)/,\"_\",$3);print ($3~s?\"true\":\"false\")}' data/icons_by_name.txt)">hide:NAME_%NAME_S%</action>
+<!--NAME_HIDE_SHOW_END-->
+
+<!--PIX_NAME_HIDE_SHOW_BEGIN-- >
+											<action signal="changed" condition="command_is_true(gawk -v num=%NAME_N% -v s=%NAME_S% -v var=$ICONAME -F\"|\" '$1==var{split($4,a);for(i in a){split(a[i],b,/:/);c[b[1]]=b[2];if(s in c){count=c[s]}};print (count>=num?\"true\":\"false\")}' data/icons_by_name.txt)">show:PIXVIEW_%NAME_S%_%NAME_N%</action>
+											<action signal="changed" condition="command_is_false(gawk -v num=%NAME_N% -v s=%NAME_S% -v var=$ICONAME -F\"|\" '$1==var{split($4,a);for(i in a){split(a[i],b,/:/);c[b[1]]=b[2];if(s in c){count=c[s]}};print (count>=num?\"true\":\"false\")}' data/icons_by_name.txt)">hide:PIXVIEW_%NAME_S%_%NAME_N%</action>
+<!--PIX_NAME_HIDE_SHOW_END-->
+
+										</tree>
+										<variable>"TAB_5"</variable>
+									</vbox>
+									<vbox space-fill="false" space-expand="false" visible="true">
+										<!--IBN_BEGIN-->
+										<notebook tab-labels="%all_sizes%">
+										<frame Preview>
+											<pixmap auto-refresh="true" visible="false">
+												<variable>PIXVIEW_%NAME_S%_%NAME_N%</variable>
+												<input file>data/preview_icon_%NAME_S%_%NAME_N%</input>
+											</pixmap>
+										</frame>
+										</notebook>
+										<!--IBN_END-->
+									</vbox>
+								</hbox>
+							</vbox>
+						</notebook>
+					</vbox>
+				</hbox>
+			</frame>
+		</hbox>
+		<hbox space-expand="false">
+			<button ok></button>
+			<button cancel></button>
+		</hbox>
+	</vbox>
+	<!--action signal="show">"gawk -f get_files_data.awk"</action-->
+</window>
+

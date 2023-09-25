@@ -1,0 +1,12 @@
+mimes/16/gnome-fs-regular.png|mimes/16|Fixed|MimeTypes|16
+mimes/160/gnome-fs-regular.png|mimes/160|Fixed|MimeTypes|160
+mimes/96/gnome-fs-regular.png|mimes/96|Fixed|MimeTypes|96
+mimes/22/gnome-fs-regular.png|mimes/22|Fixed|MimeTypes|22
+mimes/48/gnome-fs-regular.png|mimes/48|Fixed|MimeTypes|48
+mimes/64/gnome-fs-regular.png|mimes/64|Fixed|MimeTypes|64
+mimes/72/gnome-fs-regular.png|mimes/72|Fixed|MimeTypes|72
+mimes/256/gnome-fs-regular.png|mimes/256|Fixed|MimeTypes|256
+mimes/192/gnome-fs-regular.png|mimes/192|Fixed|MimeTypes|192
+mimes/128/gnome-fs-regular.png|mimes/128|Fixed|MimeTypes|128
+mimes/24/gnome-fs-regular.png|mimes/24|Fixed|MimeTypes|24
+mimes/32/gnome-fs-regular.png|mimes/32|Fixed|MimeTypes|32

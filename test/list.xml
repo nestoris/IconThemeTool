@@ -1,0 +1,11 @@
+<window image-name="" space-fill="true" space-expand="true" width-default="800" window_position="1" title="Тема значков: SE98" resizable="true">
+	<vbox space-fill="true" space-expand="true">
+				<tree>
+					<variable>TREE1</variable>
+					<height>300</height>
+					<width>200</width>
+					<label>icon</label>
+					<input file icon-column="0">icons.txt</input>
+				</tree>
+	</vbox>
+</window>

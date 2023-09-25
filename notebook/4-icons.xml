@@ -1,0 +1,36 @@
+<window title="Значки">
+	<vbox space-fill="true" space-expand="true" visible="true">
+		<hbox space-fill="true" space-expand="true">
+			<vbox space-fill="true" space-expand="true" visible="true">
+				<tree auto-refresh="true" exported-column="0" rules-hint="true">
+					<label>"Имя|Ширина|Высота|Тип|Оригинальный|Ошибки"</label>
+					<variable>ICON</variable>
+					<item>apps/32/gnome-panel-window-list.png|16|16|png|файл|rectangle</item>
+					<item>apps/16/mate-panel-window-menu.png|16|16|png|симлинк|rectangle</item>
+					<item>apps/22/xchat.xpm|22|22|xpm|файл|rectangle</item>
+					<item>places/scalable/folder-remote-afp.icon|16|16|icon|файл|</item>
+					<item>devices/scalable/modem.svg|48|48|svg|файл|</item>
+					<action signal="changed" condition="command_is_false([ -z $ICON ] && echo true || echo false)">[ -f "%themedir%/$ICON" ] && cp "%themedir%/$ICON" data/preview_icon</action>
+					<action signal="changed" condition="command_is_true(gawk -f itt.awk --image \"%themedir%/$ICON\")">show:PIXVIEW</action>
+					<action signal="changed" condition="command_is_true(gawk -f itt.awk --image \"%themedir%/$ICON\")">hide:TEXTINFO</action>
+					<action signal="changed" condition="command_is_false(gawk -f itt.awk --image \"%themedir%/$ICON\")">hide:PIXVIEW</action>
+					<action signal="changed" condition="command_is_false(gawk -f itt.awk --image \"%themedir%/$ICON\")">show:TEXTINFO</action>
+					<!--action signal="changed">gawk -f itt.awk --image "%themedir%/$ICON"</action-->
+				</tree>
+				<variable>"TAB_4"</variable>
+			</vbox>
+			<vbox space-fill="false" space-expand="false" visible="true">
+				<frame Preview>
+					<pixmap auto-refresh="true" visible="false">
+						<variable>PIXVIEW</variable>
+						<input file>data/preview_icon</input>
+					</pixmap>
+					<text auto-refresh="true" visible="false">
+						<variable>TEXTINFO</variable>
+						<input file>data/preview_icon</input>
+					</text>
+				</frame>
+			</vbox>
+		</hbox>
+	</vbox>
+</window>

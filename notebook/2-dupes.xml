@@ -1,0 +1,59 @@
+<window title="Дубликаты">
+	<vbox space-fill="true" space-expand="true">
+		<hbox space-fill="true" space-expand="true" homogeneous="true">
+			<frame Список дубликатов>
+				<vbox space-fill="true" space-expand="true">
+					<tree auto-refresh="true" exported-column="0" headers-clickable="false" search-column="1" enable-search="true">
+						<variable>DUPLIST</variable>
+						<label>файл|md5sum</label>
+						<!--item>data</item-->
+						<input file>data/duplist.txt</input>
+						<action signal="changed" condition="command_is_false([ -z $DUPLIST ] && echo true || echo false)">[ -f "%themedir%/$DUPLIST" ] && cp "%themedir%/$DUPLIST" data/preview_dup</action>
+						<action condition="command_is_false([ -z $DUPLIST ] && echo true || echo false)">[ -f "%themedir%/$DUPLIST" ] && dbus-send --session --print-reply --dest=org.freedesktop.FileManager1 --type=method_call /org/freedesktop/FileManager1 org.freedesktop.FileManager1.ShowItems array:string:"%themedir%/$DUPLIST" string:""</action>
+					</tree>
+				</vbox>
+			</frame>
+			<frame Значок>
+				<vbox>
+				<hbox space-fill="true" space-expand="true" spacing="0" homogeneous="false">
+					<vbox>
+						<menubar>
+							<menu use-underline="true">
+								<menuitem stock-id="gtk-open" accel-key="0x51" accel-mods="4">
+									<action>[ -f "%themedir%/$DUPLIST" ] && dbus-send --session --print-reply --dest=org.freedesktop.FileManager1 --type=method_call /org/freedesktop/FileManager1 org.freedesktop.FileManager1.ShowItems array:string:"%themedir%/$DUPLIST" string:""</action>
+								</menuitem>
+								<menuitem icon-name="emblem-symbolic-link" label="Link files with same md5sum.">
+									<action>[ -f "%themedir%/$DUPLIST" ] && echo LINKDUPES $DUPLIST</action>
+								</menuitem>
+								<menuitem icon-name="emblem-symbolic-link" label="Link it's' dupes everywhere.">
+									<action>[ -f "%themedir%/$DUPLIST" ] && echo LINKALLDUPES $DUPLIST</action>
+								</menuitem>
+								<menuitem icon-name="folder" label="Link it's' dupes in same directory.">
+									<action>[ -f "%themedir%/$DUPLIST" ] && echo LINKSAMEDIRDUPES $DUPLIST</action>
+								</menuitem>
+							<menuitemseparator></menuitemseparator>
+								<menuitem stock-id="gtk-quit" accel-key="0x51" accel-mods="4">
+									<action>exit:Quit</action>
+								</menuitem>
+								<label>"_File"</label>
+							</menu>
+							<menu label="_Other" use-underline="true">
+								<menuitem stock-id="gtk-home" label="Stock Icon"></menuitem>
+								<menuitemseparator></menuitemseparator>
+							</menu>
+						</menubar>
+					</vbox>
+				</hbox>
+				</vbox>
+				<hbox space-fill="true" space-expand="true" homogeneous="false">
+			<frame Preview>
+					<pixmap auto-refresh="true">
+						<input file>data/preview_dup</input>
+					</pixmap>
+			</frame>
+				</hbox>
+			</frame>
+		</hbox>
+		<variable>"TAB_2"</variable>
+	</vbox>
+</window>

@@ -1,0 +1,40 @@
+<window title="Общее">
+	<vbox space-fill="true" space-expand="true">
+		<hbox homogeneous="false">
+			<vbox space-expand="false" space-fill="true">
+				<frame Образец>
+					<pixmap xalign="0" auto-refresh="true">
+						<input file>"data/example_icon"</input>
+					</pixmap>
+				</frame>
+			</vbox>
+			<vbox space-expand="false" space-fill="true">
+				<frame Описание>
+					<text space-expand="true" space-fill="true" xalign="0" yalign="0" use-markup="true" auto-refresh="true">
+						<input file>"data/descr.html"</input>
+					</text>
+				</frame>
+			</vbox>
+			<vbox space-expand="true" space-fill="true">
+			<frame Директории>
+				<tree space-expand="true" space-fill="true" auto-sort="false" visible="true" rules-hint="true" auto-refresh="true">
+					<label>%columnames%</label>
+					<variable>"DIRECTORIES"</variable>
+					<input file>"data/dirs_descs.csv"</input>
+					<action signal="changed">"echo DIRINFO $DIRECTORIES"</action>
+					<action>"xdg-open %themedir%/$DIRECTORIES"</action>
+				</tree>
+			</frame>
+			</vbox>
+		</hbox>
+		<hbox homogeneous="false">
+			<frame Описание директории>
+				<edit space-expand="true" space-fill="true" auto-refresh="true">
+					<input file>"data/dir_desc.txt"</input>
+					<height>200</height>
+				</edit>
+			</frame>
+		</hbox>
+		<variable>"TAB_1"</variable>
+	</vbox>
+</window>

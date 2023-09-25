@@ -1,0 +1,62 @@
+<window title="Контексты">
+	<vbox space-fill="true" space-expand="true">
+		<hbox>
+			<vbox space-fill="true" space-expand="true">
+				<notebook space-fill="true" space-expand="true" show-border="true" homogeneous="false" tab-vborder="0" tab-pos="0" labels="%contexts%">
+					<vbox>
+						<tree auto-refresh="true">
+							<label>Папка|Размер|Масштаб|Контекст|Тип|Наибольший|Наименьший</label>
+							<input>gawk -F"|" '$4~/%context%/' data/dirinfo.csv</input>
+							<!--action signal="cursor-changed">[ -d "%themedir%/$tree_%context%" ] && find "%themedir%/$tree_%context%" -maxdepth 1 -mindepth 1 -printf "$tree_%context%!%f|%f\n" > data/iconsindir.txt</action-->
+							<action signal="cursor-changed">echo LIST $tree_%context%</action>
+							<action signal="button-release-event" function="refresh">icon_selected</action>
+							<action signal="key-release-event" function="refresh">icon_selected</action>
+							<action signal="cursor-changed" function="clear">iconfilefilter</action>
+							<variable>tree_%context%</variable>
+						</tree>
+						<variable>tab_%context%</variable>
+					</vbox>
+				</notebook>
+				<variable>"TAB_3"</variable>
+			</vbox>
+			<vbox space-fill="true" space-expand="true">
+				<hbox space-fill="true" space-expand="false">
+					<entry secondary-icon-stock="gtk-clear" space-expand="true">
+						<default>""</default>
+						<variable>iconfilefilter</variable>
+						<action function="refresh">icon_selected</action>
+						<action signal="secondary-icon-press" function="clear">iconfilefilter</action>
+					</entry>
+				</hbox>
+				<hbox space-fill="true" space-expand="true">
+					<tree auto-refresh="true" column-visible="0|1|0|1">
+						<label>Путь|Имя файла|Имя|Расширение|Тип|Ширина|Высота|Размер|Тип объекта</label>
+						<input>if [ -z "$iconfilefilter" ]; then cat data/iconsindir.txt; else gawk -v f="$iconfilefilter" -F"|" '$3~f' data/iconsindir.txt; fi</input>
+						<!--action signal="button-press-event">echo INFO $icon_selected</action-->
+						<!--action signal="button-release-event">./info.awk $icon_selected</action-->
+						<action signal="button-release-event">echo INFO $icon_selected</action>
+						<action signal="key-release-event">echo INFO $icon_selected</action>
+						<action>echo XDG-SELECT $icon_selected</action>
+						<!--action signal="changed">echo INFO $icon_selected</action-->
+						<variable>icon_selected</variable>
+					</tree>
+				</hbox>
+			</vbox>
+			<vbox space-fill="true" space-expand="false">
+				<hbox space-fill="true" space-expand="false">
+					<pixmap auto-refresh="true">
+						<input file>data/view_icon</input>
+						<variable>view_icon</variable>
+					</pixmap>
+				</hbox>
+				<hbox space-fill="true" space-expand="true">
+					<vbox space-fill="true" space-expand="true">
+						<edit auto-refresh="true">
+							<input file>data/iconinfo.txt</input>
+						</edit>
+					</vbox>
+				</hbox>
+			</vbox>
+		</hbox>
+	</vbox>
+</window>
